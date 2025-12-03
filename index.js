@@ -4,11 +4,11 @@ require("dotenv").config();
 const { Client, GatewayIntentBits, SlashCommandBuilder, Routes, REST } = require("discord.js");
 
 const TOKEN = process.env.TOKEN;
-const CLIENT_ID = process.env.CLIENT_ID; // deine Bot-ID
-const GUILD_ID = process.env.GUILD_ID;   // Server-ID
+const CLIENT_ID = process.env.CLIENT_ID; 
+const GUILD_ID = process.env.GUILD_ID;   
 
-// HIER EINTRAGEN:
-const ROLE_ID = "1444999584991543317"; // Abmelde-Rolle hier eintragen
+// Rolle hier eintragen
+const ROLE_ID = "1444999584991543317";
 
 const client = new Client({
     intents: [
@@ -52,7 +52,7 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
 // BOT START
 // ---------------------------
 
-client.on("clientReady", () => {
+client.on("ready", () => {
     console.log(`Bot ist eingeloggt als: ${client.user.tag}`);
 });
 
@@ -67,7 +67,6 @@ client.on("interactionCreate", async (interaction) => {
         const grund = interaction.options.getString("grund");
         const member = interaction.member;
 
-        // Rolle geben
         await member.roles.add(ROLE_ID);
 
         await interaction.reply({
@@ -75,7 +74,6 @@ client.on("interactionCreate", async (interaction) => {
             ephemeral: true
         });
 
-        // Timer: 24 Stunden
         setTimeout(async () => {
             const guildMember = await interaction.guild.members.fetch(member.id).catch(() => null);
 
@@ -88,7 +86,7 @@ client.on("interactionCreate", async (interaction) => {
                     console.log("Konnte keine DM schicken.");
                 }
             }
-        }, 24 * 60 * 60 * 1000); // 24 Stunden
+        }, 24 * 60 * 60 * 1000);
     }
 });
 
